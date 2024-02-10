@@ -42,13 +42,15 @@ class AppDownloader():
             raw_data = self.downloader.download()
             if raw_data:
                 self.parse(raw_data)
-
-    def open_link(self):
-        r = requests.get(self.url)
+            else:
+                print(f"no {self.file_type} available on {self.url}")
 
     def parse(self, raw_data):
         self.parser = self.parser_class(raw_data, self.file_type)
         self.links = self.parser.get_all_links(base=self.url)
+        if not self.links:
+            print(f"no {self.file_type} available on {self.url}")
+            return
         for link in self.links:
             path, file = os.path.split(link)
             output_file = os.path.join(self.output, file)
