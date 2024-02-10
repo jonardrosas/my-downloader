@@ -24,11 +24,13 @@ class AppDownloader():
     downloader = None
     handler = Handler
     parser_class =  HtmlParser
-    output = "output"
+    _output_path = "output"
 
-    def __init__(self, file_type, url):
+    def __init__(self, file_type, url, output_path=None):
         self.file_type = file_type
         self.url = url
+        if output_path:
+            self._output_path = output_path
         self.is_valid = self._is_valid_format(file_type)
         if not self.is_valid:
             raise InvalidFormat('Not a registered extension')
@@ -53,8 +55,12 @@ class AppDownloader():
             return
         for link in self.links:
             path, file = os.path.split(link)
-            output_file = os.path.join(self.output, file)
-            with open(output_file, 'wb') as output_file:
+            folder_name = path.split('/')[-1]
+            output_folder = os.path.join(self._output_path, folder_name)
+            if not os.path.exists(output_folder):
+                os.makedirs(output_folder)
+            output_path = os.path.join(output_folder, file)
+            with open(output_path, 'wb') as output_file:
                 r = requests.get(link)
                 for chunk in r.iter_content(chunk_size=128):
                     output_file.write(chunk)
@@ -70,10 +76,12 @@ def run():
     parser = argparse.ArgumentParser()
     parser.add_argument('input', help="Input file extension you want to download", choices=[FileTypeEnums.PDF.value])
     parser.add_argument('url', help="Url link", type=str)
+    parser.add_argument('--output', help="Ouput path where you want to store")
     args = parser.parse_args()
     ext = args.input
     url = args.url
-    app = AppDownloader(ext, url)
+    output_path = args.output
+    app = AppDownloader(ext, url, output_path=output_path)
     app.download()
 
 
