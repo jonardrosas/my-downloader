@@ -6,37 +6,31 @@ from .parser.html import HtmlParser
 from .storage.base import DefaultStorage
 
 
-
-class AppBase:
+class AppDownManger():
+    parser_class = HtmlParser
     storage_class = DefaultStorage
     extractor_class = DefaultExtractor
 
     def __init__(self, file_type, url, output_path=None):
         self.file_type = file_type
         self.url = url
+        self.output_path = output_path
         if not self._is_valid_format(file_type):
             raise InvalidFormat("Not a registered extension")
-        self.storage = self.get_storage(output_path=output_path)
+        self.setup()
 
-    def get_storage(self, output_path=None):
-        return self.storage_class(output=output_path)
-
-    def _is_valid_format(self, format):
+    def _is_valid_format(self, format) -> bool:
         for _format in FileTypeEnums:
             if _format.value == format:
                 return True
         return False
 
-
-class AppDownloader(AppBase):
-    parser_class = HtmlParser
-
-    def __init__(self, file_type, url, output_path=None):
-        super().__init__(file_type, url, output_path=output_path)
-        self.setup()
-
     def setup(self):
+        self.storage = self.get_storage(output_path=self.output_path)
         self.downloader = self.extractor_class(self.url)
+
+    def get_storage(self, output_path=None):
+        return self.storage_class(output=output_path)
 
     def download(self):
         if self.downloader:

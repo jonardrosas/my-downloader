@@ -1,6 +1,6 @@
 import argparse
 from src.app.enums import FileTypeEnums
-from src.app import AppDownloader
+from src.app import AppDownManger
 
 
 def run():
@@ -11,12 +11,12 @@ def run():
         choices=[FileTypeEnums.PDF.value],
     )
     parser.add_argument("url", help="Url link", type=str)
-    parser.add_argument("--output", help="Ouput path where you want to store")
+    parser.add_argument("--output", help="Output path is where you want to store the retrieved item")
     args = parser.parse_args()
     ext = args.input
     url = args.url
     output_path = args.output
-    app = AppDownloader(ext, url, output_path=output_path)
+    app = AppDownManger(ext, url, output_path=output_path)
     app.download()
 
 

@@ -1,5 +1,5 @@
-import chunk
 import os
+from ..extractors.base import DefaultExtractor
 
 from abc import ABC, abstractmethod
 import requests
@@ -15,13 +15,18 @@ class StorageAbstract(ABC):
 class DefaultStorage(StorageAbstract):
     _output_path = "output"
     chunk_size = 128
+    extractor_class = DefaultExtractor
 
     def __init__(self, output=None):
         if output:
             self._output = output
+        self.setup()
+
+    def setup(self):
+        self.extractor = self.extractor_class()
 
     def get(self, link):
-        return requests.get(link)
+        return self.extractor.get_request(link)
 
     def store(self, link):
         if not link:

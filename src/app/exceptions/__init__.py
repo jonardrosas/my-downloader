@@ -6,3 +6,7 @@ class InvalidFormat(Exception):
 
 class NoDownloader(Exception):
     pass
+
+
+class NoUrlProvided(Exception):
+    pass
