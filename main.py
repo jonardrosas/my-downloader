@@ -8,7 +8,7 @@ def run():
     parser.add_argument(
         "input",
         help="Input file extension you want to download",
-        choices=[FileTypeEnums.PDF.value],
+        choices=[choice.value for choice in FileTypeEnums],
     )
     parser.add_argument("url", help="Url link", type=str)
     parser.add_argument("--output", help="Output path is where you want to store the retrieved item")

@@ -2,12 +2,12 @@ import os
 from .enums import FileTypeEnums
 from .exceptions import InvalidFormat, NoDownloader
 from .extractors.base import DefaultExtractor
-from .parser.html import HtmlParser
+from .parser.html import ParserHandler
 from .storage.base import DefaultStorage
 
 
 class AppDownManger():
-    parser_class = HtmlParser
+    parser_class = ParserHandler
     storage_class = DefaultStorage
     extractor_class = DefaultExtractor
 
@@ -20,10 +20,7 @@ class AppDownManger():
         self.setup()
 
     def _is_valid_format(self, format) -> bool:
-        for _format in FileTypeEnums:
-            if _format.value == format:
-                return True
-        return False
+        return format in [choice.value for choice in FileTypeEnums]
 
     def setup(self):
         self.storage = self.get_storage(output_path=self.output_path)
@@ -41,7 +38,7 @@ class AppDownManger():
                 print(f"no {self.file_type} available on {self.url}")
 
     def parse(self, raw_data):
-        self.parser = self.parser_class(raw_data, self.file_type)
+        self.parser = self.parser_class(raw_data, self.file_type).get_parser()
         self.links = self.parser.get_all_links(base=self.url)
         if not self.links:
             print(f"no {self.file_type} available on {self.url}")
