@@ -35,7 +35,7 @@ class AppDownManger():
             if raw_data:
                 self.parse(raw_data)
             else:
-                print(f"no {self.file_type} available on {self.url}")
+                print(f"no raw data")
 
     def parse(self, raw_data):
         self.parser = self.parser_class(raw_data, self.file_type).get_parser()
@@ -44,6 +44,7 @@ class AppDownManger():
             print(f"no {self.file_type} available on {self.url}")
             return
         for link in self.links:
+            print(link)
             self.store(link)
 
     def store(self, link):

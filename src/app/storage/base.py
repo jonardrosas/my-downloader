@@ -19,7 +19,7 @@ class DefaultStorage(StorageAbstract):
 
     def __init__(self, output=None):
         if output:
-            self._output = output
+            self._output_path = output
         self.setup()
 
     def setup(self):
