@@ -16,7 +16,6 @@ class BaseParser:
         if not self._file_type:
             return
         self.soup = self.parser(raw_data, self._parser_type)
-        import pdb; pdb.set_trace()
         for link in  self.soup.find_all('a'):
             href = link.get('href')
             if href and href.endswith(self._file_type) and href not in self._links:
