@@ -11,7 +11,6 @@ class BaseDownloader(ABC):
         pass
 
 
-
 class DefaultExtractor(BaseDownloader):
 
     def __init__(self, url=None) -> None:

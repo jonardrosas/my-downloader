@@ -54,7 +54,7 @@ class ImageParser(BaseParser):
                     href = link.get(attribute)
                     if isinstance(self._file_type, list):
                         for ext in self._file_type:
-                            if href and href.endswith(ext) and href not in self._links:
+                            if href and href not in self._links:
                                 self._links.append(href)
                     else:
                         if href and href.endswith(self._file_type) and href not in self._links:
