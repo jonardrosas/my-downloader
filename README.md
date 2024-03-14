@@ -1,13 +1,20 @@
 Installations
 
     $python -m venv env
-    $source env/bin/activate
+    $source env/bin/activate (linux) env/Script/activate (windows)
     $pip install -r requirements.txt
 
 
 Usage:
+    $python main.py fileformat <url> --output=<location>
 
+    $python main.py .jpg https://www.acer.com/sg-en/laptops
+    $python main.py img https://www.acer.com/sg-en/laptops
     $python main.py .pdf https://jonardrosas.com
 
-.pdf = is the format of the files you want to search
-https://jonardrosas.com   ==> is the url link you want to search
+fileformat
+   - pdf, img, jpg, webp
+url
+   - the url where you want to search
+output
+   - optional location to store the downloaded file
